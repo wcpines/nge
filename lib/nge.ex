@@ -1,18 +1,14 @@
 defmodule Nge do
-  @moduledoc """
-  Documentation for Nge.
-  """
+  alias LogParser
+  alias Api
 
-  @doc """
-  Hello world.
+  @csv Application.get_env(:nge, :activity_log)
 
-  ## Examples
-
-      iex> Nge.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def run do
+    case LogParser.parse(@csv) do
+      {:ok, logs} -> Api.post_runs(logs)
+      {:error, msg} -> IO.puts(msg)
+      _ -> IO.puts("borked")
+    end
   end
 end

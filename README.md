@@ -1,21 +1,29 @@
 # Nge
 
-**TODO: Add description**
+Given a CSV, upload run-based activities to Strava
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `nge` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:nge, "~> 0.1.0"}
-  ]
-end
+```sh
+export RUNNING_LOGS=<path_to_your_csv>
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/nge](https://hexdocs.pm/nge).
 
+CSV required headers:
+
+- Date
+- Name
+- Distance
+- Minutes
+- Seconds
+- is_xt
+- Notes
+
+## WIP
+
+This project did what I needed it to, but it's not ready for prime-time
+
+### Known Issues
+
+- CLI tool that requires you to have an Elixir installation / BEAM vm 
+- Rate limiting (600req/15min) means multiple runs
+- Strava oauth means you need to open a browser
+- Runs are de-duplicated based on `date` so this will not include double days

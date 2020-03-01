@@ -38,7 +38,7 @@ defmodule Api do
     Strava.Paginator.stream(fn paginator ->
       Strava.Activities.get_logged_in_athlete_activities(client, paginator)
     end)
-    |> Stream.take(1000)
+    |> Stream.take(5000)
     |> Enum.filter(&(Map.get(&1, :type) == activity_type))
   end
 end

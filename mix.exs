@@ -20,6 +20,11 @@ defmodule Nge.MixProject do
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    [{:strava, "~> 1.0"}, {:csv, "~> 2.3"}]
+    [
+      {:csv, "~> 2.3"},
+      {:plug, "~> 1.9"},
+      {:plug_cowboy, "~> 2.0"},
+      {:strava, "~> 1.0"}
+    ]
   end
 end

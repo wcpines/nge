@@ -1,12 +1,12 @@
 # lib/nge/api.ex
-defmodule Api do
+defmodule Nge.Api do
+  alias Nge.Auth
+
   @moduledoc """
   Fetching auth'd athlete activities
   Posting new ones
   """
   @default_activity_type "Run"
-
-  alias Auth
 
   def post_runs(csv_logs) do
     client = Auth.gen_client()
@@ -14,9 +14,11 @@ defmodule Api do
     new =
       client
       |> fetch_runs
-      |> LogFilter.new_activities_by_date(csv_logs)
+      |> ActivityLogFilter.new_activities_by_date(csv_logs)
 
-    require IEx; IEx.pry
+    require IEx
+    IEx.pry()
+
     new
     |> Enum.each(fn run ->
       Strava.Activities.create_activity(

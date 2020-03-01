@@ -1,11 +1,11 @@
 # lib/nge/auth.ex
-defmodule Auth do
-  alias Strava.Auth, as: Api
+defmodule Nge.Auth do
+  alias Strava.Auth, as: Strauth
 
   def gen_client do
     code = get_code |> String.trim()
 
-    Api.get_token(code: code, grant_type: "authorization_code")
+    Strauth.get_token(code: code, grant_type: "authorization_code")
     |> elem(1)
     |> Map.get(:token)
     |> Map.get(:access_token)
@@ -13,7 +13,7 @@ defmodule Auth do
   end
 
   def get_url do
-    Api.authorize_url!(
+    Strauth.authorize_url!(
       scope: "profile:write,activity:read_all,activity:write",
       response_type: "code"
     )

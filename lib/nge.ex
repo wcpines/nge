@@ -1,14 +1,16 @@
 defmodule Nge do
-  alias LogParser
-  alias Api
+  alias Nge.ActivityLogParser
+  alias Nge.Api
 
   @csv Application.get_env(:nge, :activity_log)
 
-  def run do
-    case LogParser.parse(@csv) do
-      {:ok, logs} -> Api.post_runs(logs)
-      {:error, msg} -> IO.puts(msg)
-      _ -> IO.puts("borked")
-    end
+  def start do
+    children = [
+      worker(Nge.Router, []),
+      worker(Nge.Importer, [])
+    ]
+
+    opts = [strategy: :one_for_one, name: Nge.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end

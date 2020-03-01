@@ -1,7 +1,7 @@
 # test/nge/api_test.exs
-defmodule ApiTest do
+defmodule Nge.ApiTest do
   use ExUnit.Case
-  alias Api
+  alias Nge.Api
 
   describe "Api.fetch_runs/1" do
     @tag :skip

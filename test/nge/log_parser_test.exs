@@ -1,18 +1,18 @@
 # test/nge/log_parser_test.exs
-defmodule LogParserTest do
+defmodule Nge.ActivityLogParserTest do
   use ExUnit.Case
 
-  alias LogParser
+  alias Nge.ActivityLogParser
   @invalid_input_file "invalid.tsv"
   @valid_input_file File.cwd!() <> "/test/support/test.csv"
 
-  describe "LogParser.parse/1" do
+  describe "ActivityLogParser.parse/1" do
     test "when given an invalid file" do
-      assert LogParser.parse(@invalid_input_file) == {:error, "Please provide a valid CSV"}
+      assert ActivityLogParser.parse(@invalid_input_file) == {:error, "Please provide a valid CSV"}
     end
 
     test "when given a valid csv" do
-      assert LogParser.parse(@valid_input_file) ==
+      assert ActivityLogParser.parse(@valid_input_file) ==
                {:ok,
                 [
                   %{

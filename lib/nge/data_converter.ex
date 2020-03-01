@@ -1,5 +1,5 @@
 # lib/nge/data_converter.ex
-defmodule DataConverter do
+defmodule Nge.DataConverter do
   def fetch_datetime(log) do
     log
     |> Map.get("Date", "")

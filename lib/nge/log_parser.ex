@@ -1,8 +1,7 @@
-defmodule LogParser do
-  require Logger
+defmodule Nge.ActivityLogParser do
+  alias Nge.DataConverter
   alias CSV
-  alias DataConverter
-
+  require Logger
   @spec parse(String.t()) :: {:ok, [ok: map()]} | {:error, String.t()}
   def parse(activity_log) do
     activity_log

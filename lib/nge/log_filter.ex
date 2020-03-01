@@ -1,5 +1,5 @@
 # lib/nge/log_filter.ex
-defmodule LogFilter do
+defmodule Nge.ActivityLogFilter do
   def new_activities_by_date(strava_logs, new_logs) do
     strava_logs
     |> filterable_dates
@@ -14,10 +14,7 @@ defmodule LogFilter do
   end
 
   def filterable_dates(strava_logs) do
-    Enum.map(strava_logs, fn activity ->
-      activity
-      |> Map.get(:start_date_local)
-      |> DateTime.to_date()
-    end)
+    strava_logs
+    |> Enum.map(&DateTime.to_date(&1.start_date_local))
   end
 end

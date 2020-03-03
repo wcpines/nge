@@ -3,11 +3,6 @@ defmodule Nge.ActivityLogFilterTest do
   alias Nge.ActivityLogFilter
   use ExUnit.Case
 
-  @all_strava_activities Application.get_env(:nge, :strava_data_path)
-                         |> File.read!()
-                         |> Code.eval_string()
-                         |> elem(0)
-
   @strava_sample [
     %Strava.SummaryActivity{
       type: "Run",
@@ -57,7 +52,7 @@ defmodule Nge.ActivityLogFilterTest do
 
   describe "ActivityLogFilter.filterable_dates/2" do
     test "it returns a list of naive datetimes" do
-      ActivityLogFilter.filterable_dates(@strava_sample) == [~D[2018-07-19], ~D[2020-01-13]]
+      assert ActivityLogFilter.filterable_dates(@strava_sample) == [~D[2020-01-13], ~D[2018-07-19]]
     end
   end
 end

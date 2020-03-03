@@ -11,4 +11,4 @@ config :strava,
   client_secret: System.get_env("STRAVA_CLIENT_SECRET"),
   access_token: System.get_env("STRAVA_ACCESS_TOKEN"),
   refresh_token: System.get_env("STRAVA_REFRESH_TOKEN"),
-  redirect_uri: "https://1b5e0ad0.ngrok.io"
+  redirect_uri: "http://localhost:4000/import"

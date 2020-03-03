@@ -1,0 +1,14 @@
+<!--index.eex template -->
+
+<div class="home">
+  <div class="page-title">
+    <h1> No Goose Eggs </h2>
+    <p>
+  </div>
+  <div class="auth">
+    <p>
+    <form action="/login" method="post" >
+      <h2><input id="auth-button" type="submit" value="login with strava"></h2>
+    </form>
+  </div>
+</div>

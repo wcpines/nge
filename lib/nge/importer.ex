@@ -4,6 +4,7 @@ defmodule Nge.Importer do
   alias Nge.ActivityLogParser
   alias Nge.Api
 
+  require Logger
   use GenServer
   @csv Application.get_env(:nge, :activity_log)
 
@@ -11,11 +12,24 @@ defmodule Nge.Importer do
     GenServer.call(__MODULE__, {:run, auth_code, csv})
   end
 
-  def handle_call({:run, csv, code}, _from, _empty_map) do
+  def handle_call({:run, auth_code, csv}, _from, _empty_map) do
     case ActivityLogParser.parse(csv) do
-      {:ok, logs} -> Api.post_runs(logs, code)
-      {:error, msg} -> IO.puts(msg)
-      _ -> IO.puts("borked")
+      {:ok, logs} ->
+        Logger.info("CSV Successfully parsed, posting to Strava!")
+        Api.post_runs(auth_code, logs)
+
+      {:error, msg} ->
+        long_message = """
+        An error occurred while trying to parse your running logs:\n
+        Reason:
+        #{msg}
+        """
+
+        {:error, long_message}
+
+      _ ->
+        Logger.error("A misc. error occurred")
+        {:error, "borked"}
     end
   end
 

@@ -5,7 +5,7 @@ defmodule Nge.ActivityLogParser do
   @spec parse(String.t()) :: {:ok, [ok: map()]} | {:error, String.t()}
   def parse(activity_log) do
     activity_log
-    |> valid_filetype?
+    |> valid_file?
     |> case do
       true ->
         do_parse(activity_log)
@@ -15,8 +15,13 @@ defmodule Nge.ActivityLogParser do
     end
   end
 
+  # TODO how to loop through all, not 'take'
   def do_parse(activity_log) do
-    parsed_logs = activity_log |> File.stream!() |> CSV.decode(headers: true) |> Enum.take(2000)
+    parsed_logs =
+      activity_log
+      |> File.stream!()
+      |> CSV.decode(headers: true)
+      |> Enum.take(10000)
 
     parsed_logs
     |> Enum.any?(&match?({:error, _error_message}, &1))
@@ -30,7 +35,7 @@ defmodule Nge.ActivityLogParser do
   end
 
   @spec format(ok: map()) :: {:ok, [map()]} | {:error, String.t()}
-  def format(results) do
+  defp format(results) do
     set =
       Enum.map(
         results,
@@ -46,8 +51,8 @@ defmodule Nge.ActivityLogParser do
     {:ok, set}
   end
 
-  defp valid_filetype?(file) do
-    Path.extname(file) == ".csv"
+  defp valid_file?(file) do
+    Path.extname(file) == ".csv" && File.exists?(file)
   end
 
   defp remove_blanks(log) do

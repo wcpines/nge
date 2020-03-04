@@ -1,6 +1,9 @@
 <!-- import.eex -->
 
+<html>
 <div class="import">
+
+    <link rel="stylesheet" href="/static/css/skeleton.css" />
 
   <div class="left six columns">
     <br>
@@ -27,3 +30,4 @@
       </div>
   </div>
 </div>
+<html>

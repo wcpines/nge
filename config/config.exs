@@ -4,7 +4,8 @@ use Mix.Config
 
 config :nge,
   activity_log: System.get_env("RUNNING_LOGS"),
-  strava_data_path: System.get_env("ACTIVITY_LOGS_PATH")
+  strava_data_path: System.get_env("ACTIVITY_LOGS_PATH"),
+  http: [protocol_options: [idle_timeout: 10_000_000]]
 
 config :strava,
   client_id: System.get_env("STRAVA_CLIENT_ID"),

@@ -1,6 +1,7 @@
 # lib/nge/api.ex
 defmodule Nge.Api do
   alias Nge.Auth
+  alias Nge.ActivityLogFilter
 
   @moduledoc """
   Fetching auth'd athlete activities
@@ -8,16 +9,13 @@ defmodule Nge.Api do
   """
   @default_activity_type "Run"
 
-  def post_runs(csv_logs) do
-    client = Auth.gen_client()
+  def post_runs(csv_logs, auth_code) do
+    client = Auth.gen_client(auth_code)
 
     new =
       client
       |> fetch_runs
       |> ActivityLogFilter.new_activities_by_date(csv_logs)
-
-    require IEx
-    IEx.pry()
 
     new
     |> Enum.each(fn run ->

@@ -1,16 +1,17 @@
 defmodule Nge do
-  alias Nge.ActivityLogParser
-  alias Nge.Api
+  use Application
+  require Logger
+  alias Nge.Importer
+  alias Nge.Router
 
-  @csv Application.get_env(:nge, :activity_log)
-
-  def start do
+  def start(_type, _args) do
     children = [
-      worker(Nge.Router, []),
-      worker(Nge.Importer, [])
+      {Plug.Cowboy, scheme: :http, plug: Router, options: [port: 4000]},
+      {Importer, []}
     ]
 
-    opts = [strategy: :one_for_one, name: Nge.Supervisor]
-    Supervisor.start_link(children, opts)
+    Logger.info("Starting application...")
+
+    Supervisor.start_link(children, strategy: :one_for_one, name: Nge.Supervisor)
   end
 end

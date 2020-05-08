@@ -45,11 +45,11 @@ defmodule Nge.Router do
     code =
       conn
       |> get_req_header("referer")
-      |> List.first
+      |> List.first()
       |> String.split("code=")
       |> Enum.at(1)
       |> String.split("&")
-      |> List.first
+      |> List.first()
 
     Importer.run(code)
   end

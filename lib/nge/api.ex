@@ -1,7 +1,7 @@
 # lib/nge/api.ex
 defmodule Nge.Api do
   alias Nge.Auth
-  alias Nge.ActivityLogFilter
+  alias Nge.ActivityFilter
 
   @moduledoc """
   Fetching auth'd athlete activities
@@ -23,7 +23,7 @@ defmodule Nge.Api do
           new = paginated_activities(client, count)
           require IEx
           IEx.pry()
-          {:ok, ActivityLogFilter.new_activities_by_date(new, csv_logs)}
+          {:ok, ActivityFilter.new_activities_by_date(new, csv_logs)}
 
         {:error, msg} ->
           {:error, msg}

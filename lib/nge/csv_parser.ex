@@ -1,14 +1,17 @@
-defmodule Nge.ActivityLogParser do
+# lib/nge/csv_parser.ex
+
+defmodule Nge.CSVParser do
   alias Nge.DataConverter
   alias CSV
   require Logger
+
   @spec parse(String.t()) :: {:ok, [ok: map()]} | {:error, String.t()}
-  def parse(activity_log) do
-    activity_log
+  def parse(csv_filename) do
+    csv_filename
     |> valid_file?
     |> case do
       true ->
-        do_parse(activity_log)
+        do_parse(csv_filename)
 
       false ->
         {:error, "Please provide a valid CSV"}
@@ -16,9 +19,9 @@ defmodule Nge.ActivityLogParser do
   end
 
   # TODO how to loop through all, not 'take'
-  def do_parse(activity_log) do
+  def do_parse(csv_filename) do
     parsed_logs =
-      activity_log
+      csv_filename
       |> File.stream!()
       |> CSV.decode(headers: true)
       |> Enum.take(10000)

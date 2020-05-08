@@ -1,5 +1,6 @@
 # lib/nge/log_filter.ex
-defmodule Nge.ActivityLogFilter do
+
+defmodule Nge.ActivityFilter do
   def new_activities_by_date(strava_logs, new_logs) do
     strava_logs
     |> filterable_dates

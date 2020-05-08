@@ -1,6 +1,6 @@
 # test/nge/log_filter_test.exs
-defmodule Nge.ActivityLogFilterTest do
-  alias Nge.ActivityLogFilter
+defmodule Nge.ActivityFilterTest do
+  alias Nge.ActivityFilter
   use ExUnit.Case
 
   @strava_sample [
@@ -43,16 +43,16 @@ defmodule Nge.ActivityLogFilterTest do
     }
   ]
 
-  describe "ActivityLogFilter.new_activities_by_date/2" do
+  describe "ActivityFilter.new_activities_by_date/2" do
     test "it returns a list of new-by-date runs" do
-      new = ActivityLogFilter.new_activities_by_date(@strava_sample, @dupe_record_logs)
+      new = ActivityFilter.new_activities_by_date(@strava_sample, @dupe_record_logs)
       assert length(new) == 1
     end
   end
 
-  describe "ActivityLogFilter.filterable_dates/2" do
+  describe "ActivityFilter.filterable_dates/2" do
     test "it returns a list of naive datetimes" do
-      assert ActivityLogFilter.filterable_dates(@strava_sample) == [~D[2020-01-13], ~D[2018-07-19]]
+      assert ActivityFilter.filterable_dates(@strava_sample) == [~D[2020-01-13], ~D[2018-07-19]]
     end
   end
 end

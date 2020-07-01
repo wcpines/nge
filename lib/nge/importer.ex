@@ -16,7 +16,7 @@ defmodule Nge.Importer do
     case CSVParser.parse(csv_filename) do
       {:ok, logs} ->
         Logger.info("CSV Successfully parsed, posting to Strava!")
-        Api.post_runs(auth_code, logs)
+        Api.post_activities(auth_code, logs)
 
       {:error, msg} ->
         long_message = """

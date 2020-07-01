@@ -9,27 +9,18 @@ defmodule Nge.Api do
   """
   @default_activity_type "Run"
 
-  # scope: all
-  # scope: after: (epoch)
-  # scope: before: (epoch)
-
-  # def post_runs(auth_code, csv_logs, scope) do
-  def post_runs(auth_code, csv_logs) do
-    client = Auth.gen_client(auth_code)
-
+  # selectively post *new* activities
+  def post_activities(auth_code, csv_logs) do
     activities_to_post =
-      case run_count(client) do
-        {:ok, count} ->
-          new = paginated_activities(client, count)
-          require IEx
-          IEx.pry()
-          {:ok, ActivityFilter.new_activities_by_date(new, csv_logs)}
+      case fetch_activities(auth_code) do
+        {:ok, fetched} ->
+          {:ok, ActivityFilter.new_activities_by_date(fetched, csv_logs)}
 
         {:error, msg} ->
           {:error, msg}
       end
 
-    activities_to_post
+    IO.inspect(activities_to_post)
     # |> Enum.each(fn run ->
     #   Strava.Activities.create_activity(
     #     client,
@@ -42,7 +33,21 @@ defmodule Nge.Api do
     # end)
   end
 
-  def paginated_activities(client, count, activity_type \\ @default_activity_type) do
+  def fetch_activities(auth_code) do
+    client = Auth.gen_client(auth_code)
+
+    client
+    |> run_count()
+    |> case do
+      {:ok, count} ->
+        {:ok, paginated_activities(client, count)}
+
+      {:error, msg} ->
+        {:error, msg}
+    end
+  end
+
+  defp paginated_activities(client, count, activity_type \\ @default_activity_type) do
     Strava.Paginator.stream(fn paginator ->
       Strava.Activities.get_logged_in_athlete_activities(client, paginator)
     end)
@@ -50,6 +55,8 @@ defmodule Nge.Api do
     |> Enum.filter(&(Map.get(&1, :type) == activity_type))
   end
 
+  # determine the number of running activities completed by the athlete so
+  # we are able to fetch that amount
   defp run_count(client) do
     with client,
          {:ok, athlete} <- Strava.Athletes.get_logged_in_athlete(client),

@@ -1,7 +1,7 @@
 # lib/nge/exporter.ex
 
 defmodule Nge.Exporter do
-  alias Nge.CSVParser
+  alias Nge.CSVGenerator
   alias Nge.Api
 
   require Logger
@@ -11,10 +11,13 @@ defmodule Nge.Exporter do
     GenServer.call(__MODULE__, {:run, auth_code, strava_activities})
   end
 
-  def handle_call({:run, auth_code, strava_activities}, _from, _empty_map) do
-    case CSVGenerator.generate(strava_activities) do
+  def handle_call({:run, auth_code}, _from, _empty_map) do
+    strava_activities = Api.fetch_activities(auth_code)
+
+    case CSVGenerator.generate_csv_stream(strava_activities) do
       {:ok, csv} ->
         Logger.info("CSV Successfully generated, preparing to email!")
+        IO.inspect(csv)
 
       {:error, msg} ->
         long_message = """

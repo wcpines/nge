@@ -1,6 +1,5 @@
 # lib/nge/csv_generator.ex
 defmodule Nge.CSVGenerator do
-  alias Nge.DataConverter
   alias CSV
   require Logger
 

@@ -2,6 +2,4 @@
 defmodule Nge.ExporterTest do
   use ExUnit.Case
   alias Nge.Exporter
-
-
 end

@@ -23,10 +23,13 @@ defmodule Nge.MixProject do
   defp deps do
     [
       {:csv, "~> 2.3"},
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_s3, "~> 2.0"},
       {:jason, "~> 1.1"},
       {:plug, "~> 1.9"},
       {:plug_cowboy, "~> 2.0"},
-      {:strava, "~> 1.0"}
+      {:strava, "~> 1.0"},
+      {:sweet_xml, "~> 0.6"}
     ]
   end
 end

@@ -6,7 +6,6 @@ defmodule Nge.Router do
 
   alias Nge.Importer
   alias Nge.Auth
-  alias Nge.Api
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :json],

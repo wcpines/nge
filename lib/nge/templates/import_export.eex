@@ -1,0 +1,55 @@
+<!-- import_export.eex -->
+
+<html>
+  <link rel="stylesheet" href="/static/css/skeleton.css" />
+
+  <div class="import">
+    <div class="right six columns">
+      <h4>Import from a CSV to Strava</h4>
+      <h5>Must have the following headers</h5>
+      <ul>
+        <li>date (timestamp)</li>
+        <li>name</li>
+        <li>distance</li>
+        <li>minutes</li>
+        <li>seconds</li>
+        <li>is_xt (boolean)</li>
+        <li>description</li>
+      </ul>
+      <form id="import-form" action="/import" method="post">
+        <input id="import-button" type="submit" value="Post CSV logs" />
+      </form>
+
+      <div class="instructions seven columns"></div>
+    </div>
+  </div>
+
+  <div class="export">
+    <div class="right six columns">
+      <h4>Export logs to a CSV</h4>
+      <h5>The following data fields are supported</h5>
+      <ul>
+        <li>average_speed</li>
+        <li>average_watts</li>
+        <li>commute</li>
+        <li>distance</li>
+        <li>elapsed_time</li>
+        <li>id</li>
+        <li>kilojoules</li>
+        <li>max_speed</li>
+        <li>moving_time</li>
+        <li>name</li>
+        <li>private</li>
+        <li>start_date</li>
+        <li>start_date_local</li>
+        <li>timezone</li>
+        <li>trainer</li>
+        <li>type</li>
+      </ul>
+
+      <form id="import-form" action="/import" method="post">
+        <input id="import-button" type="submit" value="Fetch strava logs" />
+      </form>
+    </div>
+  </div>
+</html>

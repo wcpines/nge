@@ -34,11 +34,25 @@ defmodule Nge.Router do
     |> send_resp(conn.status || 302, body)
   end
 
-  get "/import" do
+
+  get "/import_export" do
     conn
     |> put_resp_header("content-type", "text/html; charset=utf-8")
-    |> send_file(200, "lib/nge/templates/import.eex")
+    |> send_file(200, "lib/nge/templates/import_export.eex")
   end
+
+  # post "/export" do
+  #   code =
+  #     conn
+  #     |> get_req_header("referer")
+  #     |> List.first()
+  #     |> String.split("code=")
+  #     |> Enum.at(1)
+  #     |> String.split("&")
+  #     |> List.first()
+
+#     Importer.run(code)
+#   end
 
   post "/import" do
     code =

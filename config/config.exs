@@ -12,7 +12,7 @@ config :strava,
   client_secret: System.get_env("STRAVA_CLIENT_SECRET"),
   access_token: System.get_env("STRAVA_ACCESS_TOKEN"),
   refresh_token: System.get_env("STRAVA_REFRESH_TOKEN"),
-  redirect_uri: "http://localhost:4000/import"
+  redirect_uri: "http://localhost:4000/import_export"
 
 config :ex_aws,
   json_codec: Jason,

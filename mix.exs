@@ -5,7 +5,7 @@ defmodule Nge.MixProject do
     [
       app: :nge,
       version: "0.1.0",
-      elixir: "~> 1.8",
+      elixir: "~> 1.10.2",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]

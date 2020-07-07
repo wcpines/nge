@@ -4,6 +4,7 @@ defmodule Nge.CSVGeneratorTest do
   use ExUnit.Case
   alias Nge.CSVGenerator
 
+  @invalid ["something that's not a map"]
   @activities List.wrap(%Strava.SummaryActivity{
                 start_latlng: [34.401293, -119.728302],
                 external_id: "garmin_push_4896694605",
@@ -18,12 +19,6 @@ defmodule Nge.CSVGeneratorTest do
                 elev_high: 54.8,
                 has_kudoed: false,
                 gear_id: "g5772424",
-                map: %Strava.PolylineMap{
-                  id: "a3414375043",
-                  polyline: nil,
-                  summary_polyline:
-                    "e_~pExpwyU\\FvA@NL@LGh@Un@Ud@Qh@e@xBAxDK|AAj@Bl@CXBd@AxBB^?n@Av@Gf@B`AB^AdANlBZlAB^FLAl@CTa@nAW`@]P{@F}BAsCS}@?e@FEBSb@MpA[jAHbAHXD`@Kp@@\\FLRZ`@\\Rb@Xd@Pb@Hn@HpAJn@?x@Ep@Kn@BNJf@DD\\DDCj@gBv@kBv@kC~@oBHq@Ha@`Aq@\\[bAkBr@_CTg@Ji@^iAZoAfAcD\\aBFm@@GIUEAaAH_ARi@`@]Ra@p@Ob@W\\]y@Kc@CaA@eBEgB@_AAiBBm@H]AuBDgBI{DDq@NiAp@sBTeADm@?GGKGE{@M"
-                },
                 name: "Shakeout pre Standup ",
                 trainer: false,
                 weighted_average_watts: nil,
@@ -51,13 +46,11 @@ defmodule Nge.CSVGeneratorTest do
                 average_speed: 3.662
               })
 
-  @invalid ["something that's not a map"]
-
   describe "generate_csv_stream/1" do
     test 'it provides a csv file' do
-      assert {:ok, list} = CSVGenerator.generate_csv_stream(@activities)
-      assert is_list(list)
-      assert length(list) == 2
+      assert {:ok, stream_transform} = CSVGenerator.generate_csv_stream(@activities)
+      assert is_function(stream_transform)
+      assert list = Enum.take(stream_transform, 2)
     end
 
     test 'it handles bad inputs' do

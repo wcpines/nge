@@ -23,24 +23,23 @@ defmodule Nge.CSVGenerator do
     :upload_id
   ]
 
-  @spec generate_csv_stream([%Strava.SummaryActivity{}]) :: {:ok, list() | :error, String.t()}
+  @generic_error_message "Could not convert strava activities to csv"
+
+  @spec generate_csv_stream([%Strava.SummaryActivity{}]) :: {:ok, fun() | :error, String.t()}
   def generate_csv_stream([%Strava.SummaryActivity{} | _t] = strava_activities) do
     result =
       strava_activities
       |> extract_fields()
       |> fields_to_rows()
       |> CSV.encode()
-      |> Enum.to_list()
 
     case result do
-      result when is_list(result) -> {:ok, result}
-      _ -> generic_convert_error()
+      result when is_function(result) -> {:ok, result}
+      _ -> {:error, @generic_error_message}
     end
   end
 
-  def generate_csv_stream(_other_inputs), do: generic_convert_error()
-
-  ##### helpers #####
+  def generate_csv_stream(_other_inputs), do: {:error, @generic_error_message}
 
   @spec extract_fields([%Strava.SummaryActivity{}]) :: [map()]
   defp extract_fields(strava_activities) do
@@ -63,6 +62,4 @@ defmodule Nge.CSVGenerator do
     |> Map.keys()
     |> Enum.map(&Atom.to_string/1)
   end
-
-  defp generic_convert_error, do: {:error, "Could not convert strava activities to csv"}
 end

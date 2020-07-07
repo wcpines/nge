@@ -1,12 +1,11 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
 config :nge,
   activity_log: System.get_env("RUNNING_LOGS"),
   strava_data_path: System.get_env("ACTIVITY_LOGS_PATH"),
   http: [protocol_options: [idle_timeout: 10_000_000]],
-  s3_storage_bucket_name: System.get_env("AWS_S3_STORAGE_BUCKET_NAME")
+  s3_storage_bucket_name: System.get_env("AWS_S3_STORAGE_BUCKET_NAME"),
+  s3: Nge.S3
 
 config :strava,
   client_id: System.get_env("STRAVA_CLIENT_ID"),

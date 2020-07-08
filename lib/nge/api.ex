@@ -37,7 +37,7 @@ defmodule Nge.Api do
     client = Auth.gen_client(auth_code)
 
     client
-    |> run_count()
+    |> get_run_count()
     |> case do
       {:ok, count} ->
         {:ok, paginated_activities(client, count)}
@@ -57,7 +57,7 @@ defmodule Nge.Api do
 
   # determine the number of running activities completed by the athlete so
   # we are able to fetch that amount
-  defp run_count(client) do
+  defp get_run_count(client) do
     with client,
          {:ok, athlete} <- Strava.Athletes.get_logged_in_athlete(client),
          {:ok, id} <- Map.fetch(athlete, :id),

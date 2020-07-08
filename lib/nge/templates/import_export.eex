@@ -47,8 +47,17 @@
         <li>type</li>
       </ul>
 
-      <form id="import-form" action="/import" method="post">
-        <input id="import-button" type="submit" value="Fetch strava logs" />
+      <form id="export-form" action="/export" method="post">
+        <p>
+          <label for="email_address"><b>Email Address</b></label><br />
+          <input id="email_address" name="email_address" type="email" required /><br />
+          <small>
+            <em >
+              <span class="note"> Required to email exported logs CSV; not available from Strava </span>
+            </em >
+          </small>
+        </p>
+        <p><input id="export-button" type="submit" value="Fetch Strava logs" /></p>
       </form>
     </div>
   </div>

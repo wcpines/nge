@@ -3,13 +3,11 @@ defmodule Nge.S3 do
   @bucket Application.get_env(:nge, :s3_storage_bucket_name)
 
   # TODO test this
-  def store_file(streamed_activity_data, email_address) do
-    content = stream_to_string(streamed_activity_data)
-
+  def store_file(csv_string, email_address) do
     filename = gen_filename(email_address)
 
     response =
-      ExAws.S3.put_object(@bucket, filename, content)
+      ExAws.S3.put_object(@bucket, filename, csv_string)
       |> ExAws.request!()
       |> handle_response
   end
@@ -20,10 +18,6 @@ defmodule Nge.S3 do
   end
 
   def handle_response(_) do
-  end
-
-  defp stream_to_string(streamed_activity_data) do
-    Enum.into(streamed_activity_data, "")
   end
 
   defp gen_filename(email_address) do

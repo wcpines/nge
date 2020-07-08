@@ -46,15 +46,14 @@ defmodule Nge.CSVGeneratorTest do
                 average_speed: 3.662
               })
 
-  describe "generate_csv_stream/1" do
+  describe "generate_csv_string/1" do
     test 'it provides a csv file' do
-      assert {:ok, stream_transform} = CSVGenerator.generate_csv_stream(@activities)
-      assert is_function(stream_transform)
-      assert list = Enum.take(stream_transform, 2)
+      assert {:ok, csv} = CSVGenerator.generate_csv_string({:ok, @activities})
+      assert String.match?(csv, ~r/average_speed/)
     end
 
     test 'it handles bad inputs' do
-      assert {:error, _err} = CSVGenerator.generate_csv_stream(@invalid)
+      assert {:error, _err} = CSVGenerator.generate_csv_string(@invalid)
     end
   end
 end

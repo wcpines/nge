@@ -15,10 +15,10 @@ defmodule Nge.Exporter do
   def handle_call({:run, auth_code, email_address}, _from, _empty_map) do
     auth_code
     |> Api.fetch_activities()
-    |> CSVGenerator.generate_csv_stream()
+    |> CSVGenerator.generate_csv_string()
     |> case do
-      {:ok, transform_func} ->
-        S3.store_file(transform_func, email_address)
+      {:ok, csv} ->
+        S3.store_file(csv, email_address)
 
       {:error, msg} ->
         long_message = """

@@ -5,7 +5,7 @@ defmodule Nge.MixProject do
     [
       app: :nge,
       version: "0.1.0",
-      elixir: "~> 1.10.2",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -22,12 +22,12 @@ defmodule Nge.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:csv, "~> 2.3"},
+      {:csv, "~> 2.4"},
       {:ex_aws, "~> 2.1"},
-      {:ex_aws_s3, "~> 2.0"},
-      {:jason, "~> 1.1"},
-      {:plug, "~> 1.9"},
-      {:plug_cowboy, "~> 2.0"},
+      {:ex_aws_s3, "~> 2.1"},
+      {:jason, "~> 1.2"},
+      {:plug, "~> 1.11"},
+      {:plug_cowboy, "~> 2.4"},
       {:strava, "~> 1.0"},
       {:sweet_xml, "~> 0.6"}
     ]

@@ -1,10 +1,10 @@
-# test/nge/csv_generator_test.exs.exs
+# test/nge/csv/generator_test.exs
 
-defmodule Nge.CSVGeneratorTest do
+defmodule Nge.CSV.GeneratorTest do
   use ExUnit.Case
-  alias Nge.CSVGenerator
+  alias Nge.CSV.Generator
 
-  @invalid ["something that's not a map"]
+  @invalid ["something that's not strava activity"]
   @activities List.wrap(%Strava.SummaryActivity{
                 start_latlng: [34.401293, -119.728302],
                 external_id: "garmin_push_4896694605",
@@ -48,13 +48,13 @@ defmodule Nge.CSVGeneratorTest do
 
   describe "generate_csv_stream/1" do
     test 'it provides a csv file' do
-      assert {:ok, stream_transform} = CSVGenerator.generate_csv_stream(@activities)
+      stream_transform = Generator.generate_csv_stream(@activities)
       assert is_function(stream_transform)
       assert list = Enum.take(stream_transform, 2)
     end
 
     test 'it handles bad inputs' do
-      assert {:error, _err} = CSVGenerator.generate_csv_stream(@invalid)
+      assert {:error, _err} = Generator.generate_csv_stream(@invalid)
     end
   end
 end

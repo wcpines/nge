@@ -41,16 +41,9 @@ defmodule Nge.Router do
   end
 
   post "/import" do
-    code =
-      conn
-      |> get_req_header("referer")
-      |> List.first()
-      |> String.split("code=")
-      |> Enum.at(1)
-      |> String.split("&")
-      |> List.first()
-
-    Importer.run(code)
+    conn
+    |> get_code_from_header()
+    |> Importer.run()
   end
 
   match _ do
@@ -59,5 +52,16 @@ defmodule Nge.Router do
       404,
       "sorry, nothin here"
     )
+  end
+
+  @spec get_code_from_header(%Plug.Conn{}) :: String.t()
+  defp get_code_from_header(conn) do
+    conn
+    |> get_req_header("referer")
+    |> List.first()
+    |> String.split("code=")
+    |> Enum.at(1)
+    |> String.split("&")
+    |> List.first()
   end
 end

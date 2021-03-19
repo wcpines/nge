@@ -1,6 +1,8 @@
 # lib/nge/strava_api_adapter.ex
 
 defmodule Nge.StravaApiAdapter do
+  @behaviour Nge.ApiAdapter
+
   alias Nge.Auth
   alias Nge.ActivityFilter
 
@@ -13,6 +15,7 @@ defmodule Nge.StravaApiAdapter do
   @default_activity_type "Run"
 
   # selectively post *new* activities
+  @spec post_activities(String.t(), [RowLog.t()]) :: :ok | {:error, String.t()}
   def post_activities(auth_code, csv_logs) do
     activities_to_post =
       case fetch_activities(auth_code) do
@@ -88,14 +91,13 @@ defmodule Nge.StravaApiAdapter do
 
   # determine the number of running activities completed by the athlete so
   # we are able to fetch that amount
-  #
-  # TODO: Fix dialyzer error  (error can't match?)
   defp run_count(client) do
     with client,
          {:ok, athlete} <- Strava.Athletes.get_logged_in_athlete(client),
          {:ok, id} <- Map.fetch(athlete, :id),
          {:ok, stats} <- Strava.Athletes.get_stats(client, id) do
       {:ok, stats.all_run_totals.count}
+      # TODO: dialyzer is angry
     else
       :error ->
         {:error, "unknown run count"}

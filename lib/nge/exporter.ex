@@ -1,8 +1,8 @@
 # lib/nge/exporter.ex
 
 defmodule Nge.Exporter do
-  alias Nge.CSVGenerator
-  alias Nge.Api
+  alias Nge.CSV.Generator
+  alias Nge.StravaApiAdapter
 
   require Logger
   use GenServer
@@ -12,26 +12,20 @@ defmodule Nge.Exporter do
   end
 
   def handle_call({:run, auth_code}, _from, _empty_map) do
-    strava_activities = Api.fetch_activities(auth_code)
+    {:ok, strava_activities, _client} = StravaApiAdapter.fetch_activities(auth_code)
 
-    case CSVGenerator.generate_csv_stream(strava_activities) do
-      {:ok, csv} ->
-        Logger.info("CSV Successfully generated, preparing to email!")
-        IO.inspect(csv)
+    reply =
+      case Generator.generate_csv_stream(strava_activities) do
+        {:error, msg} ->
+          msg
 
-      {:error, msg} ->
-        long_message = """
-        An error occurred while trying to generate a csv of your Strava activities:\n
-        Reason:
-        #{msg}
-        """
+        # TODO: dialyzer is angry
+        _csv_stream ->
+          Logger.info("CSV Successfully generated, preparing to email!")
+          "TODO: s3 upload"
+      end
 
-        {:error, long_message}
-
-      _ ->
-        Logger.error("A misc. error occurred")
-        {:error, "borked"}
-    end
+    {:reply, reply, %{}}
   end
 
   def init(init_arg) do

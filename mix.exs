@@ -7,7 +7,8 @@ defmodule Nge.MixProject do
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      xref: [exclude: [IEx, IEx.Pry]]
     ]
   end
 
@@ -23,6 +24,7 @@ defmodule Nge.MixProject do
   defp deps do
     [
       {:csv, "~> 2.4"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.1"},
       {:jason, "~> 1.2"},

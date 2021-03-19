@@ -1,7 +1,8 @@
 # test/nge/s3_test.exs
 defmodule Nge.S3Test do
   use ExUnit.Case
-  alias Nge.S3
+
+  @s3 Application.get_env(:nge, :s3)
 
   @username "foosername"
   @csv_to_stream [
@@ -48,7 +49,7 @@ defmodule Nge.S3Test do
   describe "store_file/2" do
     test "it zips the file" do
       stream = @csv_to_stream |> CSV.encode()
-      S3.store_file(stream, @username)
+      @s3.store_file(stream, @username)
     end
   end
 end

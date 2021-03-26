@@ -1,0 +1,61 @@
+<!-- import_export.eex -->
+
+<html>
+  <div class="import">
+
+    <link rel="stylesheet" href="/static/css/skeleton.css" />
+
+    <div class="left six columns">
+      <br>
+    </div>
+
+    <div class="right six columns">
+      <h4>Import from a CSV </h4>
+      <h5> Must have the following column headers: </h5>
+      <ul>
+        <li> date (timestamp)  </li>
+        <li> name </li>
+        <li> distance </li>
+        <li> minutes </li>
+        <li> seconds </li>
+        <li> description </li>
+      </ul>
+      <form id="import-form" action="/import" method="post" >
+        <input id="import-button" type="submit" value="Upload running logs">
+      </form>
+
+        <div class="instructions seven columns">
+
+        </div>
+    </div>
+  </div>
+
+  <div class="export">
+
+    <div class="left six columns">
+      <br>
+    </div>
+
+    <div class="right six columns">
+      <h4>Export the following fields: </h4>
+      <ul>
+        <li> name </li>
+        <li> date </li>
+        <li> miles </li>
+        <li> pace </li>
+        <li> time </li>
+        <li> duration </li>
+        <li> shoe </li>
+        <li> shoe-miles </li>
+      </ul>
+        <input id="export-button" type="submit" value="Get running logs">
+
+        <div class="instructions seven columns">
+
+        </div>
+        <script type=text/javascript src="/javascripts/send.js"></script>
+    </div>
+  </div>
+
+<html>
+

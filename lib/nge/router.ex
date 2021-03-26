@@ -34,10 +34,10 @@ defmodule Nge.Router do
     |> send_resp(conn.status || 302, body)
   end
 
-  get "/import" do
+  get "/import_export" do
     conn
     |> put_resp_header("content-type", "text/html; charset=utf-8")
-    |> send_file(200, "lib/nge/templates/import.eex")
+    |> send_file(200, "lib/nge/templates/import_export.eex")
   end
 
   post "/import" do

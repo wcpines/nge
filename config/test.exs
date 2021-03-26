@@ -1,4 +1,6 @@
-use Mix.Config
+# config/test.exs
+import Config
 
-config :nge, :s3, Nge.MockS3
-config :nge, :strava_api_adapter, Nge.MockStravaApiAdapter
+config :nge,
+  strava_api_adapter: Nge.MockStravaApiAdapter,
+  csv_parser: Nge.MockCSVParser

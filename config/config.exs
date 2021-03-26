@@ -1,11 +1,11 @@
-use Mix.Config
+import Config
 
 config :nge,
   activity_log: File.cwd!() <> "/test/support/test.csv",
+  csv_parser: Nge.CSV.Parser,
   strava_data_path: System.get_env("ACTIVITY_LOGS_PATH"),
   http: [protocol_options: [idle_timeout: 10_000_000]],
   s3_storage_bucket_name: System.get_env("AWS_S3_STORAGE_BUCKET_NAME"),
-  strava_api_adapter: Nge.StravaApiAdapter,
   s3: Nge.S3
 
 config :strava,
@@ -24,3 +24,5 @@ config :ex_aws,
 config :ex_aws, :hackney_opts,
   follow_redirect: true,
   recv_timeout: 30_000
+
+import_config "#{config_env()}.exs"

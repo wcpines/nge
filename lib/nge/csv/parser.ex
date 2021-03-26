@@ -1,5 +1,10 @@
 # lib/nge/csv/parser.ex
 
+defmodule Nge.Parser do
+  @callback parse(String.t()) ::
+              {:ok, [RowLog.t()]} | {:error, String.t()}
+end
+
 defmodule Nge.CSV.Parser do
   alias Nge.CSV.DataConverter
   alias Nge.CSV.RowLog
@@ -16,8 +21,9 @@ defmodule Nge.CSV.Parser do
 
   # TODO require CSV format that doesn't need data converter?
 
-  @spec parse(String.t()) ::
-          {:ok, [RowLog.t()]} | {:error, String.t()}
+  @behaviour Nge.Parser
+
+  @impl true
   def parse(csv_filename) do
     if valid_file?(csv_filename) do
       csv_filename

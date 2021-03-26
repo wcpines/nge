@@ -4,10 +4,11 @@ defmodule Nge.MixProject do
   def project do
     [
       app: :nge,
-      version: "0.1.0",
-      elixir: "~> 1.11",
-      start_permanent: Mix.env() == :prod,
       deps: deps(),
+      elixir: "~> 1.11",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      start_permanent: Mix.env() == :prod,
+      version: "0.1.0",
       xref: [exclude: [IEx, IEx.Pry]]
     ]
   end
@@ -20,6 +21,9 @@ defmodule Nge.MixProject do
     ]
   end
 
+  defp elixirc_paths(:test), do: ["test/support", "lib"]
+  defp elixirc_paths(_), do: ["lib"]
+
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
@@ -28,6 +32,7 @@ defmodule Nge.MixProject do
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.1"},
       {:jason, "~> 1.2"},
+      {:mox, "~> 1.0", only: :test},
       {:plug, "~> 1.11"},
       {:plug_cowboy, "~> 2.4"},
       {:strava, "~> 1.0"},

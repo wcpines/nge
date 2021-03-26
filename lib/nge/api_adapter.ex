@@ -1,8 +1,8 @@
 # lib/nge/api_adapter.ex
 defmodule Nge.ApiAdapter do
-  @callback post_activities(String.t(), [RowLog.t()]) ::
+  @callback post_activities(auth_code :: String.t(), csv_logs :: [RowLog.t()]) ::
               :ok | {:error, String.t()}
-  @callback fetch_activities(String.t()) ::
+  @callback fetch_activities(auth_code :: String.t()) ::
               {:ok, [Strava.SummaryActivity.t()], Tesla.Env.client()}
               | {:error, String.t()}
 end

@@ -15,7 +15,7 @@ defmodule Nge.StravaApiAdapter do
   @default_activity_type "Run"
 
   # selectively post *new* activities
-  @spec post_activities(String.t(), [RowLog.t()]) :: :ok | {:error, String.t()}
+  @impl true
   def post_activities(auth_code, csv_logs) do
     activities_to_post =
       case fetch_activities(auth_code) do
@@ -39,9 +39,7 @@ defmodule Nge.StravaApiAdapter do
     # end)
   end
 
-  @spec fetch_activities(String.t()) ::
-          {:ok, [Strava.SummaryActivity.t()], Tesla.Env.client()}
-          | {:error, String.t()}
+  @impl true
   def fetch_activities(auth_code) do
     client = Auth.gen_client(auth_code)
 

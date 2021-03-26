@@ -6,7 +6,7 @@ defmodule Nge.CSV.ParserTest do
   alias Nge.CSV.RowLog
 
   @invalid_input_file "invalid.tsv"
-  @valid_input_file File.cwd!() <> "/test/support/test.csv"
+  @valid_input_file Application.get_env(:nge, :activity_log)
 
   describe "CSV.Parser.parse/1" do
     test "when given an invalid file" do
@@ -26,7 +26,7 @@ defmodule Nge.CSV.ParserTest do
                     type: "Run",
                     description: "Ppark with devo and Rich. It was beautiful"
                   },
-                  %Nge.CSV.RowLog{
+                  %RowLog{
                     datetime: ~N[2016-04-21 12:00:00.00],
                     description: "Fake record missing data",
                     distance: 0.0,

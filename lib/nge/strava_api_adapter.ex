@@ -2,6 +2,7 @@
 
 defmodule Nge.StravaApiAdapter do
   @behaviour Nge.ApiAdapter
+  @live Application.get_env(:nge, :really_post_logs)
 
   alias Nge.Auth
   alias Nge.ActivityFilter
@@ -17,35 +18,24 @@ defmodule Nge.StravaApiAdapter do
   # selectively post *new* activities
   @impl true
   def post_activities(auth_code, csv_logs) do
-    activities_to_post =
-      case fetch_activities(auth_code) do
-        {:ok, fetched, client} ->
-          {:ok, ActivityFilter.new_activities_by_date(fetched, csv_logs), client}
+    with {:ok, fetched, client} <- fetch_activities(auth_code),
+         postable_activities <- ActivityFilter.new_activities_by_date(fetched, csv_logs),
+         posted <- Enum.map(postable_activities, &post_activity(&1, client)) do
+      failed_count = Enum.count(posted, &({:error, _} = &1))
+      success_count = length(posted) - failed_count
 
-        {:error, msg} ->
-          {:error, msg}
-      end
-
-    case activities_to_post do
-      {:ok, postable_activities, client} ->
-        Enum.each(postable_activities, &post_activity(&1, client))
-
+      {:ok, "Successfully posted #{success_count} activities; #{failed_count} failed to upload"}
+    else
       {:error, msg} ->
         {:error, msg}
     end
-
-    # TODO log errors from create_activity
-    IO.inspect(activities_to_post)
-    # end)
   end
 
   @impl true
   def fetch_activities(auth_code) do
     client = Auth.gen_client(auth_code)
 
-    client
-    |> run_count()
-    |> case do
+    case run_count(client) do
       {:ok, count} ->
         {:ok, paginated_activities(client, count), client}
 
@@ -55,27 +45,32 @@ defmodule Nge.StravaApiAdapter do
   end
 
   defp post_activity(activity, client) do
-    res =
-      Strava.Activities.create_activity(
-        client,
-        activity.name,
-        activity.type,
-        activity.datetime,
-        activity.moving_time,
-        distance: activity.distance
-      )
-
-    case res do
-      {:error, tesla_env} ->
-        Logger.warn("Activity failed to upload",
-          activity: activity,
-          api_response_body: tesla_env.body
+    if @live do
+      res =
+        Strava.Activities.create_activity(
+          client,
+          activity.name,
+          activity.type,
+          activity.datetime,
+          activity.moving_time,
+          distance: activity.distance
         )
 
-        res
+      case res do
+        {:error, tesla_env} ->
+          Logger.warn("Activity failed to upload",
+            activity: activity,
+            api_response_body: tesla_env.body
+          )
 
-      _ ->
-        res
+          res
+
+        _ ->
+          res
+      end
+    else
+      Logger.info("Not live, ignoring logs to post")
+      {:ok, "not live"}
     end
   end
 
@@ -95,10 +90,21 @@ defmodule Nge.StravaApiAdapter do
          {:ok, id} <- Map.fetch(athlete, :id),
          {:ok, stats} <- Strava.Athletes.get_stats(client, id) do
       {:ok, stats.all_run_totals.count}
-      # TODO: dialyzer is angry
     else
-      :error ->
+      {:error, tesla_env} ->
+        log_strava_error(tesla_env)
         {:error, "unknown run count"}
+
+      :error ->
+        {:error, "athlete ID not found"}
     end
+  end
+
+  defp log_strava_error(tesla_env) do
+    Logger.error("""
+    request to strava failed
+    status: #{tesla_env.status}
+    body: #{tesla_env.body}
+    """)
   end
 end

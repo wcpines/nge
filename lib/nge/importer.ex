@@ -14,9 +14,9 @@ defmodule Nge.Importer do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  @spec run(String.t(), String.t(), atom | pid) :: any
-  def run(auth_code, csv_filename \\ @csv_filename, server \\ __MODULE__) do
-    GenServer.call(server, {:run, auth_code, csv_filename})
+  @spec run(String.t(), String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  def run(auth_code, csv_filename \\ @csv_filename) do
+    GenServer.call(__MODULE__, {:run, auth_code, csv_filename})
   end
 
   # Server
